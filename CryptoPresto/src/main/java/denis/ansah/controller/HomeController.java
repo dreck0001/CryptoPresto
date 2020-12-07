@@ -37,16 +37,45 @@ public class HomeController {
 		return new ModelAndView("index");
 	}
 	
-	@RequestMapping(value="/user*")
-	public ModelAndView signUpSignIn(HttpServletResponse response, HttpServletRequest request) throws IOException{
+	@RequestMapping(value="/user")
+	public ModelAndView showSignUpSignInPage(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
         String action = request.getParameter("action");
-        System.out.println(action);
+    	System.out.println(action);
 		return new ModelAndView(action);
 	}
-	
+	@RequestMapping(value="/SignOut")
+	public ModelAndView signOut(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
+		System.out.println("Signing out");
+		request.getSession().removeAttribute("username");
+		request.getSession().invalidate();
+		return new ModelAndView("index");
+	}
+	@RequestMapping(value="/SignIn")
+	public ModelAndView signIn(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
+    	System.out.println("signing in");
+    	errorMessageString = "User/password does not exist. Please double-check.";
+        POJOUtils util = new POJOUtils();
+        String username = request.getParameter("username");
+      	String password = request.getParameter("password");
+      	User user = util.getUser(username, password);
+      	if (user != null) {
+//      		save username and password in session
+      		HttpSession session = request.getSession();
+			session.setAttribute("username", username);
+			Cookie usernameCookie = new Cookie("username", username);
+			Cookie passwordCookie = new Cookie("password", password);
+			usernameCookie.setMaxAge(300); //5min session
+			passwordCookie.setMaxAge(300);
+			response.addCookie(usernameCookie);
+			response.addCookie(passwordCookie);
+    		return new ModelAndView("account", "username", username);
+		}
+		return new ModelAndView("signInError", "errorMessageString", errorMessageString);
+	}
 	@RequestMapping(value="/SignUp")
 	public ModelAndView signUp(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
-		errorMessageString = "An unknown error has occurred.";
+    	System.out.println("signing up");
+    	errorMessageString = "An unknown error has occurred.";
 		//		Filter request fields
 		if(request.getAttribute("unsafe_request") == "true"){
 			errorMessageString = "Unsafe or special string characters are not allowed.";
@@ -59,7 +88,6 @@ public class HomeController {
         while(paramNames.hasMoreElements()) {
             String key = (String) paramNames.nextElement();
             String val = request.getParameter(key);
-            
             if (val.isBlank()) {
             	errorMessageString = key + " field cannot be blank";
                 System.out.println(errorMessageString);
@@ -90,28 +118,5 @@ public class HomeController {
         }
 		errorMessageString = "A database error has occured. Please try again";
  		return new ModelAndView("signUpError", "errorMessageString", errorMessageString);
-	}
-	
-	@RequestMapping(value="/SignIn")
-	public ModelAndView signIn(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
-        System.out.println("signIn");
-		errorMessageString = "User/password does not exist. Please double-check.";
-        POJOUtils util = new POJOUtils();
-        String username = request.getParameter("username");
-      	String password = request.getParameter("password");
-      	User user = util.getUser(username, password);
-      	if (user != null) {
-//      		save username and password in session
-      		HttpSession session = request.getSession();
-			session.setAttribute("username", username);
-			Cookie usernameCookie = new Cookie("username", username);
-			Cookie passwordCookie = new Cookie("password", password);
-			usernameCookie.setMaxAge(300); //5min session
-			passwordCookie.setMaxAge(300);
-			response.addCookie(usernameCookie);
-			response.addCookie(passwordCookie);
-    		return new ModelAndView("account", "username", username);
-		}
-		return new ModelAndView("signInError", "errorMessageString", errorMessageString);
 	}
 }

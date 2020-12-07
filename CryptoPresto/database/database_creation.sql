@@ -1,5 +1,5 @@
 --
--- Create schema users
+-- Create database CryptoPresto
 --
 
 CREATE DATABASE IF NOT EXISTS CryptoPresto;
@@ -20,6 +20,24 @@ CREATE TABLE `users` (
   `dateCreated` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`id`)
 );
+
+--
+-- Definition of table `portfolio`
+--
+
+DROP TABLE IF EXISTS `portfolio`;
+CREATE TABLE `portfolio` (
+  `id` int(15) unsigned zerofill NOT NULL,
+  `user_id` int(15) unsigned zerofill NOT NULL,
+  `asset_id` int(15) unsigned zerofill NOT NULL,
+  `asset` varchar(20) NOT NULL default '',
+  `quantity` varchar(20) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+);
+
+
+
+
 -- --) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 -- --
 -- --create database booksdb;

@@ -26,9 +26,9 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     		<i class="fa fa-remove"></i>
   		</a>
   		<h4 class="w3-bar-item"><b>Menu</b></h4>
- 	 	<a class="w3-bar-item w3-button w3-hover-black" href="#">Portfolio</a>
-  		<a class="w3-bar-item w3-button w3-hover-black" href="#">Transactions</a>
-  		<a class="w3-bar-item w3-button w3-hover-black" href="#">Account</a>
+ 	 	<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=portfolio">Portfolio</a>
+  		<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=transactions">Transactions</a>
+  		<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=account">Account</a>
 	</nav>
 	
 </c:if>
@@ -38,8 +38,13 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     <a href="/CryptoPresto" class="w3-bar-item w3-button w3-theme-l1">Crypto Presto</a>
- 	<a href="user?action=signUp" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign Up</a>
-    <a href="user?action=signIn" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign In</a>
+    <c:if test="${not empty username}">
+ 		<a href="SignOut" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign Out</a>
+    </c:if>
+    <c:if test="${empty username}">
+		<a href="user?action=signUp" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign Up</a>
+    	<a href="user?action=signIn" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign In</a>
+    </c:if>
   </div>
 </div>
 
