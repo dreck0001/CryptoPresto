@@ -30,10 +30,45 @@ CREATE TABLE `portfolio` (
   `id` int(15) unsigned zerofill NOT NULL,
   `user_id` int(15) unsigned zerofill NOT NULL,
   `asset_id` int(15) unsigned zerofill NOT NULL,
-  `asset` varchar(20) NOT NULL default '',
-  `quantity` varchar(20) NOT NULL default '',
+  `quantity` int(6) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
 );
+
+--
+-- Definition of table `assets`
+--
+
+DROP TABLE IF EXISTS `assets`;
+CREATE TABLE `assets` (
+  `id` int(15) unsigned zerofill NOT NULL,
+  `asset` varchar(20) NOT NULL default '',
+  `symbol` varchar(10) NOT NULL default '',
+  `available` int(15) unsigned NOT NULL,
+  `all_time_high` int(15) unsigned NOT NULL,
+  `all_time_low` int(15) unsigned NOT NULL,
+  `price` int(15) unsigned NOT NULL,
+  
+  PRIMARY KEY  (`id`)
+);
+
+--
+-- Definition of table `bank_accounts`
+--
+
+DROP TABLE IF EXISTS `bank_accounts`;
+CREATE TABLE `bank_accounts` (
+  `id` int(15) unsigned zerofill NOT NULL,
+  `user_id` int(15) unsigned zerofill NOT NULL,
+
+  `bank_name` varchar(40) NOT NULL default '',
+  `type` varchar(20) NOT NULL default '',
+  `routing_number` int(15) unsigned NOT NULL,
+  `account_number` int(15) unsigned NOT NULL,
+  
+  PRIMARY KEY  (`id`)
+);
+
+
 
 
 
