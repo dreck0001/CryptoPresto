@@ -27,19 +27,28 @@ import denis.ansah.POJO.User;
 @Controller
 public class MenuController {
 	
-	@RequestMapping(value="/menu")
+	@RequestMapping(value="/account")
 	public ModelAndView menu(HttpServletResponse response, HttpServletRequest request) throws IOException{
-		String sessionUsername =  (String) request.getSession().getAttribute("username");
-		if (sessionUsername != null) {
+		String username =  (String) request.getSession().getAttribute("username");
+		if (username != null) {
+      		HttpSession session = request.getSession();
 			String menu = request.getParameter("menu");
 			System.out.println(menu);
 			if (menu.equals("Portfolio")) {
 				//get list of assets items using Hibernate
-				return new ModelAndView("portfolio");
+//				session.setAttribute("portfolio", portfolio);
 			}
-			
+			else if (menu.equals("Tansactions")) {
+				//get list of transactions using Hibernate
+//				session.setAttribute("transactions", transactions);
+			}
+			else if (menu.equals("Account")) {
+				//get user details using Hibernate
+//				session.setAttribute("transactions", transactions);
+			}
+			return new ModelAndView(menu);
 		}
-		return new ModelAndView("index");
+		return new ModelAndView("account");
 	}
 
 }

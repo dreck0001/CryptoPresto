@@ -52,23 +52,35 @@ CREATE TABLE `assets` (
 );
 
 --
--- Definition of table `bank_accounts`
+-- Definition of table `bankAccounts`
 --
 
-DROP TABLE IF EXISTS `bank_accounts`;
-CREATE TABLE `bank_accounts` (
+DROP TABLE IF EXISTS `bankAccounts`;
+CREATE TABLE `bankAccounts` (
   `id` int(15) unsigned zerofill NOT NULL,
-  `user_id` int(15) unsigned zerofill NOT NULL,
-
-  `bank_name` varchar(40) NOT NULL default '',
+  `userId` int(15) unsigned zerofill NOT NULL,
+  `bankName` varchar(40) NOT NULL default '',
   `type` varchar(20) NOT NULL default '',
-  `routing_number` int(15) unsigned NOT NULL,
-  `account_number` int(15) unsigned NOT NULL,
+  `routingNumber` int(15) unsigned NOT NULL,
+  `accountNumber` int(15) unsigned NOT NULL,
   
   PRIMARY KEY  (`id`)
 );
 
+--
+-- Definition of table `transactions`
+--
 
+DROP TABLE IF EXISTS `transactions`;
+CREATE TABLE `transactions` (
+  `id` int(15) unsigned zerofill NOT NULL,
+  `user_id` int(15) unsigned zerofill NOT NULL,
+  `type` varchar(20) NOT NULL default '',
+  `asset_id` int(15) unsigned NOT NULL,
+  `to_address` int(15) unsigned zerofill,
+  
+  PRIMARY KEY  (`id`)
+);
 
 
 

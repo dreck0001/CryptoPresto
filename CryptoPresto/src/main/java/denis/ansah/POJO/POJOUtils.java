@@ -62,4 +62,23 @@ public class POJOUtils {
         }
         return user;
 	}
+	
+	public List<Bank> getBanks(int userId) {
+		Connection connection = null;
+        PreparedStatement statement = null;
+        List<Bank> banks = null;
+        try {
+            DAO dao = new DAO();
+            connection = dao.getConnection();
+            QueryRunner queryRunner = new QueryRunner();
+            ResultSetHandler<List<Bank>> handler = new BeanListHandler<>(Bank.class);
+            String query = "SELECT * FROM bankAccounts WHERE userId = " + userId;
+            List<Bank> banksReturned = queryRunner.query(connection, query, handler);
+            if (!banksReturned.isEmpty()) { banks = banksReturned; }
+        } catch (Exception e) {
+            Logger.getLogger(POJOUtils.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println(e.getMessage());
+        }
+        return banks;
+	}
 }

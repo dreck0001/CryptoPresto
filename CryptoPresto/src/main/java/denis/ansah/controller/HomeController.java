@@ -17,10 +17,9 @@ import javax.swing.border.EmptyBorder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.concurrent.ThreadLocalRandom; 
+import java.util.concurrent.ThreadLocalRandom;
 
-
-
+import denis.ansah.POJO.Bank;
 import denis.ansah.POJO.POJOUtils;
 import denis.ansah.POJO.User;
 
@@ -29,12 +28,12 @@ public class HomeController {
 
 	@RequestMapping(value="/")
 	public ModelAndView entry(HttpServletResponse response, HttpServletRequest request) throws IOException{
-		String username =  (String) request.getSession().getAttribute("username");
-        System.out.println("index - " + username);
-        if (username != null) {
-			return new ModelAndView("index", "username", username);
+		User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+        	System.out.println("account - " + user.getUsername());
+			return new ModelAndView("account", "user", user);
 		}
-		return new ModelAndView("index");
+		return new ModelAndView("account");
 	}
 	
 	@RequestMapping(value="/user")
@@ -46,9 +45,9 @@ public class HomeController {
 	@RequestMapping(value="/SignOut")
 	public ModelAndView signOut(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
 		System.out.println("Signing out");
-		request.getSession().removeAttribute("username");
+		request.getSession().removeAttribute("user");
 		request.getSession().invalidate();
-		return new ModelAndView("index");
+		return new ModelAndView("account");
 	}
 	@RequestMapping(value="/SignIn")
 	public ModelAndView signIn(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
@@ -58,17 +57,20 @@ public class HomeController {
         String username = request.getParameter("username");
       	String password = request.getParameter("password");
       	User user = util.getUser(username, password);
+      	List<Bank> banks = util.getBanks(555);
       	if (user != null) {
-//      		save username and password in session
+//      	save username in session
       		HttpSession session = request.getSession();
-			session.setAttribute("username", username);
-			Cookie usernameCookie = new Cookie("username", username);
-			Cookie passwordCookie = new Cookie("password", password);
+			session.setAttribute("user", user);
+			session.setAttribute("banks", banks);
+			
+			Cookie usernameCookie = new Cookie("username", user.getUsername());
+			Cookie passwordCookie = new Cookie("password", user.getPassword());
 			usernameCookie.setMaxAge(300); //5min session
 			passwordCookie.setMaxAge(300);
 			response.addCookie(usernameCookie);
 			response.addCookie(passwordCookie);
-    		return new ModelAndView("account", "username", username);
+    		return new ModelAndView("account", "username", user.getUsername());
 		}
 		return new ModelAndView("signInError", "errorMessageString", errorMessageString);
 	}
@@ -113,8 +115,10 @@ public class HomeController {
         // display user account page
         if (resultInt != 0) {
         	System.out.println(resultInt + "user added");
-         	request.setAttribute("username", username);
-      		return new ModelAndView("account", "username", username);
+          	User user = util.getUser(username, password);
+      		HttpSession session = request.getSession();
+			session.setAttribute("user", user);
+      		return new ModelAndView("account");
         }
 		errorMessageString = "A database error has occured. Please try again";
  		return new ModelAndView("signUpError", "errorMessageString", errorMessageString);
