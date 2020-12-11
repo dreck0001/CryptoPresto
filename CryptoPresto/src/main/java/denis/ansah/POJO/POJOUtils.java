@@ -2,6 +2,8 @@ package denis.ansah.POJO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +64,25 @@ public class POJOUtils {
         }
         return user;
 	}
+	
+	
+//	Bank
+	
+	public int addBank(int id, int userId, String bankName, String type, int routingNumber, int accountNumber){
+        Connection connection = null;
+        int result = 0;
+        try {
+            DAO dao = new DAO();
+            connection = dao.getConnection();
+            QueryRunner queryRunner = new QueryRunner();
+            String query = "INSERT INTO bankAccounts (id,userId,bankName,type,routingNumber,accountNumber) VALUES (?,?,?,?,?,?)";
+            result = queryRunner.update(connection, query, id,userId,bankName,type,routingNumber,accountNumber);
+        } catch (Exception e) {
+            Logger.getLogger(POJOUtils.class.getName()).log(Level.SEVERE, null, e);
+            result =0;
+        }
+        return result;
+    }
 	
 	public List<Bank> getBanks(int userId) {
 		Connection connection = null;

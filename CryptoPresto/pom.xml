@@ -74,6 +74,13 @@
             <artifactId>javax.servlet.jsp.jstl-api</artifactId>
             <version>1.2.1</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.10.Final</version>
+        </dependency>
+        
 	</dependencies>
 
 	<repositories>

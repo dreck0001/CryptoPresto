@@ -31,7 +31,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   		<h4 class="w3-bar-item"><b>Menu</b></h4>
  	 	<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=portfolio">Portfolio</a>
   		<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=transactions">Transactions</a>
-  		<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=account_addBank_cancel">Account</a>
+  		<a class="w3-bar-item w3-button w3-hover-black" href="/CryptoPresto/account?menu=account">Account</a>
 	</nav>
 	
 <!-- Navbar -->
@@ -43,52 +43,32 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   		</div>
 	</div>
 	
-	<c:if test="${empty addingBank}">
-		<div class="w3-main" style="margin-left:250px">
-  			<div class="w3-row w3-padding-64">
-    			<div class="w3-twothird w3-container">
-      				<h1 class="w3-text-teal">Welcome ${user.getUsername()} </h1> 
-      				<p> Digital Address: CP${user.getId()}
-      				<p> Member Since    : ${user.getDateCreated()}
-      				<p> Linked Bank Accounts    : 
-      				<select name="bank">
-      				<c:forEach items="${banks}" var="bank">
-    					<option value="${bank.getId()}">${bank.getBankName()} - ${bank.getType()}</option> 				
-					</c:forEach>				
-            		</select>
-					<button id="addBank" class="float-left submit-button" >Add</button>
-					<button id="addBank" class="float-left submit-button" >Edit</button>
-					<button id="addBank" class="float-left submit-button" >Delete</button>
-    			</div>
-  			</div>
-			<script type="text/javascript">
-    			document.getElementById("addBank").onclick = function () {
-    				/* document.forms[0].action = "/CryptoPresto/account?menu=account_addBank";
-                    document.forms[0].submit(); */
-        			location.href = "/CryptoPresto/account?menu=account_addBank"; 
-    			};
-			</script>
-			<h3 style="color:red;" > ${status} </h3>
-		</div>
-	</c:if>
-	
-	<c:if test="${not empty addingBank}">
 	<div class="w3-main" style="margin-left:250px">
-  	<div class="w3-row w3-padding-64">
-    <div class="w3-twothird w3-container">
-	<h1 class="w3-text-teal">Fill Bank Details </h1> 
+  		<div class="w3-row w3-padding-64">
+    		<div class="w3-twothird w3-container">
+      			<h1 class="w3-text-teal">Welcome ${user.getUsername()} </h1> 
+      			<p> Digital Address: CP${user.getId()}
+      			<p> Member Since    : ${user.getDateCreated()}
+      			<p> Linked Bank Accounts    : 
+      			<select name="bank">
+      			<c:forEach items="${banks}" var="bank">
+    				<option value="${bank.getId()}">${bank.getBankName()} - ${bank.getType()}</option>
+    				<button type="button">Edit</button>
+    				<button type="button">Delete</button>    				
+				</c:forEach>				
+            	</select>
+				<!-- <button id="addBank" class="float-left submit-button" >Add</button> -->
+    	</div>
+  	</div>
+	
+    <h1 class="w3-text-teal">Fill Bank Details </h1> 
+    
 	<form action="/CryptoPresto/bank.htm" method="post">
 		Select Bank:
         <select name="bankName">
-        	<option value="Citizens Bank">Citizens Bank</option>
-        	<option value="Rockland Trust Bank">Rockland Trust Bank</option>
-       		<option value="TD Bank">TD Bank</option>
-       		<option value="Bank of America">Bank of America</option>
-       		<option value="People’s United Bank">People’s United Bank</option>
-       		<option value="Digital Federal Credit Union">Digital Federal Credit Union</option>
-       		<option value="Chase Bank">Chase Bank</option>
-       		<option value="Barclays Bank">Barclays Bank</option>
-       		<option value="Santander Bank">Santander Bank</option>
+        	<option value="United Kingdom">United Kingdom</option>
+        	<option value="United Stated">United Stated</option>
+       		<option value="Mozambique">Mozambique</option>
         </select>
         <br><br>
           	Routing Number: <input type="text" name="routingNumber"/><br/><br/>
@@ -100,30 +80,10 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
                 <label>Checking</label>
             <br/><br/>
             
-        <input type="submit" value="Add Bank Account"/>
- 	</form>
- 	<button id="cancelAddBank" class="float-left submit-button" >Cancel</button>
- 	<script type="text/javascript">
-    	document.getElementById("cancelAddBank").onclick = function () {
-    		location.href = "/CryptoPresto/account?menu=account_addBank_cancel"; 
-    	};
-	</script>
-    </div>
-  	</div>
-  	</div>
-	</c:if>
+            <input type="submit" value="Add Bank Account"/>
+        </form>
+</div>
 </c:if>
-
-
-
-
-
-
-
-
-
-
-
 
 
 

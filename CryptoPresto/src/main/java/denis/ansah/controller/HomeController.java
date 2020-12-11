@@ -57,11 +57,12 @@ public class HomeController {
         String username = request.getParameter("username");
       	String password = request.getParameter("password");
       	User user = util.getUser(username, password);
-      	List<Bank> banks = util.getBanks(555);
       	if (user != null) {
 //      	save username in session
       		HttpSession session = request.getSession();
 			session.setAttribute("user", user);
+        	// add banks to session
+	      	List<Bank> banks = util.getBanks(user.getId());
 			session.setAttribute("banks", banks);
 			
 			Cookie usernameCookie = new Cookie("username", user.getUsername());
