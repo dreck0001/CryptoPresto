@@ -1,5 +1,5 @@
 # CryptoPresto
-A Spring MVC-based web platform for crypto trades and transfers
+A Spring MVC-based web platform for cryptocurrency trades and transfers
 
 
 Framework: Spring mvc 5.2.3.RELEASE.  
