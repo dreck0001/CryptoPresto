@@ -58,7 +58,24 @@ public class HomeController {
 	public ModelAndView signIn(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
     	System.out.println("signing in");
     	errorMessageString = "User/password does not exist. Please double-check.";
-        POJOUtils util = new POJOUtils();
+		//Filter request fields
+		if(request.getAttribute("unsafe_request") == "true"){
+			errorMessageString = "Unsafe or special string characters are not allowed.";
+        	System.out.println(errorMessageString);
+            return new ModelAndView("signInError", "errorMessageString", errorMessageString);
+        }
+//		Check for empty fields
+		Enumeration<String> paramNames = request.getParameterNames();
+        while(paramNames.hasMoreElements()) {
+            String key = (String) paramNames.nextElement();
+            String val = request.getParameter(key);
+            if (val.isBlank()) {
+            	errorMessageString = key + " field cannot be blank";
+                System.out.println(errorMessageString);
+        		return new ModelAndView("signInError", "errorMessageString", errorMessageString);
+            }
+        }
+		
         DAOUtils hibernateUtils = new DAOUtils();
         String username = request.getParameter("username").toLowerCase();
       	String password = request.getParameter("password");
@@ -72,15 +89,9 @@ public class HomeController {
 					HttpSession session = request.getSession();
 					session.setAttribute("user", existingUser);
 		        	// get associated banks and add to session
+			        POJOUtils util = new POJOUtils();
 			      	List<Bank> banks = util.getBanks(existingUser.getId());
 					session.setAttribute("banks", banks);
-					//add username and password to cookies(not sure if this is safe)
-//					Cookie usernameCookie = new Cookie("username", existingUser.getUsername());
-//					Cookie passwordCookie = new Cookie("password", existingUser.getPassword());
-//					usernameCookie.setMaxAge(300); //5min session
-//					passwordCookie.setMaxAge(300);
-//					response.addCookie(usernameCookie);
-//					response.addCookie(passwordCookie);
 		    		return new ModelAndView("account");
 				}
 				//username is a match but password is wrong

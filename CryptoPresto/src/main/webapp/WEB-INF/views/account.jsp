@@ -20,8 +20,31 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 <body>
 
 
-<!-- ------------USER LOGGED IN------------ -->
+<!-- ------------USER NOT LOGGED IN------------ -->
+<c:if test="${empty user}">
+	<!-- Navbar -->
+	<div class="w3-top">
+  		<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+    		<a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+    		<a href="/CryptoPresto" class="w3-bar-item w3-button w3-theme-l1">Crypto Presto</a>
+			<a href="user?action=signUp" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign Up</a>
+    		<a href="user?action=signIn" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign In</a>
+  		</div>
+	</div>
 
+	<div class="w3-main" style="margin-left:250px">
+  		<div class="w3-row w3-padding-64">
+    		<div class="w3-twothird w3-container">
+				<h1 class="w3-text-teal">Welcome</h1>
+    			<p>Crypto Presto is a platform that offers users the opportunity to buy, sell and transfer cryptocurrency assets to any digital currency address. 
+    			<p>Sign in to continue.
+    		</div>
+  		</div>
+	</div>
+</c:if>
+
+
+<!-- ------------USER LOGGED IN------------ -->
 <c:if test="${not empty user}">
 <!-- Sidebar -->
 	<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
@@ -43,6 +66,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   		</div>
 	</div>
 	
+	<!--------------USER IS ADDING A BANK ACCOUNT-------------->
 	<c:if test="${empty addingBank}">
 		<div class="w3-main" style="margin-left:250px">
   			<div class="w3-row w3-padding-64">
@@ -116,41 +140,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- ------------USER NOT LOGGED IN------------ -->
-
-<c:if test="${empty user}">
-	<!-- Navbar -->
-	<div class="w3-top">
-  		<div class="w3-bar w3-theme w3-top w3-left-align w3-large">
-    		<a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
-    		<a href="/CryptoPresto" class="w3-bar-item w3-button w3-theme-l1">Crypto Presto</a>
-			<a href="user?action=signUp" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign Up</a>
-    		<a href="user?action=signIn" class="w3-bar-item w3-button w3-hide-small w3-hover-white">Sign In</a>
-  		</div>
-	</div>
-
-	<div class="w3-main" style="margin-left:250px">
-  		<div class="w3-row w3-padding-64">
-    		<div class="w3-twothird w3-container">
-				<h1 class="w3-text-teal">Welcome</h1>
-    			<p>Crypto Presto is a platform that offers users the opportunity to buy, sell and transfer cryptocurrency assets to any digital currency address. 
-    			<p>Sign in to continue.
-    		</div>
-  		</div>
-	</div>
-</c:if>
 <!-- END MAIN -->
 </body>
 </html>
