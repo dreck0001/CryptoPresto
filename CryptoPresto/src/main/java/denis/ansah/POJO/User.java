@@ -6,7 +6,6 @@ public class User {
 	private String lastname;
 	private String username;
 	private String password;
-	private String passwordConf;
 	private String dateCreated;
 	public User() {
 	}
@@ -25,9 +24,6 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
-	public String getPasswordConf() {
-		return passwordConf;
-	}
 	public String getDateCreated() {
 		return dateCreated;
 	}
@@ -45,9 +41,6 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public void setPasswordConf(String passwordConf) {
-		this.passwordConf = passwordConf;
 	}
 	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;

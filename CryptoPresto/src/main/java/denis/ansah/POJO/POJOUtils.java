@@ -15,22 +15,22 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import denis.ansah.DAO.DAO;
 
 public class POJOUtils {
-	public int addUser(int id, String firstname, String lastname, String username, String password, String passwordConf, String dateCreated){
+	public int addUser(int id, String firstname, String lastname, String username, String password, String dateCreated){
         Connection connection = null;
         int result = 0;
         try {
             DAO dao = new DAO();
             connection = dao.getConnection();
             QueryRunner queryRunner = new QueryRunner();
-            String query = "INSERT INTO users (id,firstname,lastname,username,password,passwordConf,dateCreated) VALUES (?,?,?,?,?,?,?)";
-            result = queryRunner.update(connection, query, id,firstname,lastname,username,password,passwordConf,dateCreated);
+            String query = "INSERT INTO users (id,firstname,lastname,username,password,dateCreated) VALUES (?,?,?,?,?,?)";
+            result = queryRunner.update(connection, query, id,firstname,lastname,username,password,dateCreated);
         } catch (Exception e) {
             Logger.getLogger(POJOUtils.class.getName()).log(Level.SEVERE, null, e);
             result =0;
         }
         return result;
     }
-	public int updateUser(int id, String firstname, String lastname, String username, String password, String passwordConf, String dateCreated){
+	public int updateUser(int id, String firstname, String lastname, String username, String password, String dateCreated){
         Connection connection = null;
         int result = 0;
         try {

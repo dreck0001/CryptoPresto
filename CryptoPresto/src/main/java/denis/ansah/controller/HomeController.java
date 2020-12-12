@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.http.HttpRequest;
 //import java.sql.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,12 @@ import javax.swing.border.EmptyBorder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.sun.xml.bind.v2.runtime.output.UTF8XmlOutput;
+
 import java.util.concurrent.ThreadLocalRandom;
 
+import denis.ansah.DAO.DAOUtils;
 import denis.ansah.POJO.Bank;
 import denis.ansah.POJO.POJOUtils;
 import denis.ansah.POJO.User;
@@ -100,23 +105,43 @@ public class HomeController {
         // validate email and password
         
         
-        // add user to database
-        int resultInt = 0;
-        POJOUtils util = new POJOUtils();
+       
+        //get user fields
         int id = ThreadLocalRandom.current().nextInt(); 
         id = Math.abs(id);
       	String firstname = request.getParameter("firstname");
       	String lastname = request.getParameter("lastname");
-      	String username = request.getParameter("username");
+      	String username = request.getParameter("username").toLowerCase();
       	String password = request.getParameter("password");
-      	String passwordConf = request.getParameter("passwordConf");
       	String dateCreated = new java.util.Date().toString();
-      	resultInt = util.addUser(id, firstname, lastname, username, password, passwordConf, dateCreated);
+
+      	//check for existing usernames
+        DAOUtils hibernateUtil = new DAOUtils();
+        List<User> existingUsers = hibernateUtil.getUsers();
+        for (User existingUser : existingUsers) {
+			if (username.equals(existingUser.getUsername())) {
+				errorMessageString = "A user already exists with the same username. Please choose a different username.";
+		 		return new ModelAndView("signUpError", "errorMessageString", errorMessageString);
+			}
+		}
+        
+        // add user to database
+        int resultInt = 0;
+        //POJOUtils util = new POJOUtils();
+      	User user = new User();
+      	user.setId(id);
+      	user.setFirstname(firstname);
+      	user.setLastname(lastname);
+      	user.setPassword(password);
+      	user.setUsername(username);
+      	user.setDateCreated(dateCreated);
+      	resultInt = hibernateUtil.addUser(user);
+      	//resultInt = util.addUser(id, firstname, lastname, username, password, dateCreated);
 
         // display user account page
         if (resultInt != 0) {
         	System.out.println(resultInt + "user added");
-          	User user = util.getUser(username, password);
+          	//User user = util.getUser(username, password);
       		HttpSession session = request.getSession();
 			session.setAttribute("user", user);
       		return new ModelAndView("account");
