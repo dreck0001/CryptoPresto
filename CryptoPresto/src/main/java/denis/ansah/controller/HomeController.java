@@ -59,27 +59,39 @@ public class HomeController {
     	System.out.println("signing in");
     	errorMessageString = "User/password does not exist. Please double-check.";
         POJOUtils util = new POJOUtils();
-        String username = request.getParameter("username");
+        DAOUtils hibernateUtils = new DAOUtils();
+        String username = request.getParameter("username").toLowerCase();
       	String password = request.getParameter("password");
-      	User user = util.getUser(username, password);
-      	if (user != null) {
-//      	save username in session
-      		HttpSession session = request.getSession();
-			session.setAttribute("user", user);
-        	// add banks to session
-	      	List<Bank> banks = util.getBanks(user.getId());
-			session.setAttribute("banks", banks);
-			
-			Cookie usernameCookie = new Cookie("username", user.getUsername());
-			Cookie passwordCookie = new Cookie("password", user.getPassword());
-			usernameCookie.setMaxAge(300); //5min session
-			passwordCookie.setMaxAge(300);
-			response.addCookie(usernameCookie);
-			response.addCookie(passwordCookie);
-    		return new ModelAndView("account", "username", user.getUsername());
+//      	User user = util.getUser(username, password);
+      	//get all users and and find the username entered and compare password with entered password
+      	List<User> existingUsers = hibernateUtils.getUsers();
+      	for (User existingUser : existingUsers) {	//for each existing user, 
+			if (username.equalsIgnoreCase(existingUser.getUsername())) { //if a username match is found,
+				if (password.equals(existingUser.getPassword())) {	//and a password match is found for the same user,
+					//then save user in session and show account view
+					HttpSession session = request.getSession();
+					session.setAttribute("user", existingUser);
+		        	// get associated banks and add to session
+			      	List<Bank> banks = util.getBanks(existingUser.getId());
+					session.setAttribute("banks", banks);
+					//add username and password to cookies(not sure if this is safe)
+//					Cookie usernameCookie = new Cookie("username", existingUser.getUsername());
+//					Cookie passwordCookie = new Cookie("password", existingUser.getPassword());
+//					usernameCookie.setMaxAge(300); //5min session
+//					passwordCookie.setMaxAge(300);
+//					response.addCookie(usernameCookie);
+//					response.addCookie(passwordCookie);
+		    		return new ModelAndView("account");
+				}
+				//username is a match but password is wrong
+				errorMessageString = "The PASSWORD is wrong for the entered username. Please try again.";
+				return new ModelAndView("signInError", "errorMessageString", errorMessageString);
+			}
 		}
+    	errorMessageString = "The USERNAME you entered does not exist. Please try again.";
 		return new ModelAndView("signInError", "errorMessageString", errorMessageString);
 	}
+	
 	@RequestMapping(value="/SignUp")
 	public ModelAndView signUp(HttpServletResponse response, HttpServletRequest request, String errorMessageString) throws IOException{
     	System.out.println("signing up");

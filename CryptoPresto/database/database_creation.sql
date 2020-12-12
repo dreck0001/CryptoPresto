@@ -16,7 +16,6 @@ CREATE TABLE `users` (
   `lastname` varchar(20) NOT NULL default '',
   `username` varchar(20) NOT NULL default '',
   `password` varchar(20) NOT NULL default '',
-  `passwordConf` varchar(20) NOT NULL default '',
   `dateCreated` varchar(40) NOT NULL default '',
   PRIMARY KEY  (`id`)
 );
