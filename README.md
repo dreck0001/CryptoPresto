@@ -7,5 +7,5 @@ View: JSP.
 Data persistence: Hibernate 5.4.10.Final.  
 Database: MySQL 8.0.21.  
 Java: 1.8.  
-User form submission: SimpleFormController.
+User form submission: SimpleFormController.  
 IDE: Eclipse Enterprise for Java Developers 2020-09 (4.17.0).  
